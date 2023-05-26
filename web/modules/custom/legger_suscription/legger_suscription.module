@@ -27,7 +27,7 @@ function legger_suscription_node_insert(Drupal\Core\Entity\EntityInterface $enti
     $request = $client->post('https://app-edu-recaudocursos-php.azurewebsites.net/api-cursos/public/crear-logs', [
       'json' => [
         'identificador' => $currentDate,
-        'tipo' => 'prueba legger',
+        'tipo' => 'prueba legger Camilo F',
         "info" => $preparing_data_json
       ]
     ]);
