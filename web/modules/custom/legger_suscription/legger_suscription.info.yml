@@ -1,0 +1,5 @@
+name: Legger Suscriptions
+type: module
+description: 'Legger Suscription for test.'
+package: Legger
+core_version_requirement: ^9.4 || ^10
