@@ -1,0 +1,17 @@
+/vendor/
+/web/core/
+/web/sites/*/settings*.php
+/web/sites/*/services*.yml
+
+# Ignore paths that contain user-generated content.
+/web/sites/*/files
+/web/sites/*/private
+
+# Ignore multi-site test environment.
+/web/sites/simpletest
+
+# Ingore Drupal contrib modules due to Composer managed dependencies.
+/web/modules/contrib/
+
+# Ignore backups
+/sql-backups/
