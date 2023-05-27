@@ -3,39 +3,47 @@
 /**
  * @file
  */
-
+use Drupal\node\NodeInterface;
 /**
  * Implements hook_entity_insert().
  */
 function legger_suscription_node_insert(Drupal\Core\Entity\EntityInterface $entity) {
-  try {
-    $currentDate = date('Y-m-d');
-    $preparing_data = [
-      'field_legger_client_name' => $entity->get('field_legger_client_name')->value,
-      'field_legger_client_nit' => $entity->get('field_legger_client_nit')->value,
-      'field_legger_point_name' => $entity->get('field_legger_point_name')->value,
-      'field_legger_team_name' => $entity->get('field_legger_team_name')->value,
-      'field_legger_cities' => $entity->get('field_legger_cities')->value,
-      'field_legger_promoter' => $entity->get('field_legger_promoter')->value,
-      'field_legger_rtc' => $entity->get('field_legger_rtc')->value,
-      'field_legger_captain_andor_user' => $entity->get('field_legger_captain_andor_user')->value,
-      'field_legger_accept_tnc_pdt' => $entity->get('field_legger_accept_tnc_pdt')->value,
-    ];
-    $preparing_data_json = json_encode($preparing_data);
+  if ($entity instanceof NodeInterface) {
+    // Get the bundle (entity type) of the node.
+    $bundle = $entity->getType();
+    if ($bundle != "legger_suscription") {
+      return;
+    }
+    try {
+      $currentDate = date('Y-m-d');
+      $preparing_data = [
+        'field_legger_client_name' => $entity->get('field_legger_client_name')->value,
+        'field_legger_client_nit' => $entity->get('field_legger_client_nit')->value,
+        'field_legger_point_name' => $entity->get('field_legger_point_name')->value,
+        'field_legger_team_name' => $entity->get('field_legger_team_name')->value,
+        'field_legger_cities' => $entity->get('field_legger_cities')->value,
+        'field_legger_promoter' => $entity->get('field_legger_promoter')->value,
+        'field_legger_rtc' => $entity->get('field_legger_rtc')->value,
+        'field_legger_captain_andor_user' => $entity->get('field_legger_captain_andor_user')->value,
+        'field_legger_accept_tnc_pdt' => $entity->get('field_legger_accept_tnc_pdt')->value,
+        'field_legger_ip' => $entity->get('field_legger_ip')->value,
+      ];
+      $preparing_data_json = json_encode($preparing_data);
 
-    $client = \Drupal::httpClient();
-    $request = $client->post('https://app-edu-recaudocursos-php.azurewebsites.net/api-cursos/public/crear-logs', [
-      'json' => [
-        'identificador' => $currentDate,
-        'tipo' => 'prueba legger Camilo F',
-        "info" => $preparing_data_json
-      ]
-    ]);
-    $response = json_decode($request->getBody());
-    $response_string = json_encode($response); 
-    \Drupal::logger('legger_suscription')->info($response_string);
-  }
-  catch (Exception $e) {
-    \Drupal::logger('legger_suscription')->error($e->getMessage());
+      $client = \Drupal::httpClient();
+      $request = $client->post('https://app-edu-recaudocursos-php.azurewebsites.net/api-cursos/public/crear-logs', [
+        'json' => [
+          'identificador' => $currentDate,
+          'tipo' => 'prueba legger Camilo F',
+          "info" => $preparing_data_json
+        ]
+      ]);
+      $response = json_decode($request->getBody());
+      $response_string = json_encode($response); 
+      \Drupal::logger('legger_suscription')->info($response_string);
+    }
+    catch (Exception $e) {
+      \Drupal::logger('legger_suscription')->error($e->getMessage());
+    }
   }
 }
